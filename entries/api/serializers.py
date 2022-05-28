@@ -10,14 +10,20 @@ class EntrySerializer(serializers.Serializer):
     amount = serializers.FloatField()
     
     def create (self, validated_data):
-        instance = Entry()
-        instance.datetime = validated_data.get("datetime")
-        instance.amount = validated_data.get("amount")
-        instance.concept = validated_data.get("concept")
+        instance = Entry(
+            datetime = validated_data.get("datetime"),
+            amount = validated_data.get("amount"),
+            concept = validated_data.get("concept")
+        )
+        instance.save()
         
         return instance
     
     
-    def update (self, instance, validatad_data):
-        pass
+    def update (self, instance, validated_data):
+        instance.datetime = validated_data.get("datetime", instance.datetime)
+        instance.concept = validated_data.get("concept", instance.concept)
+        instance.amount = validated_data.get("amount", instance.amount)
+        instance.save()
         
+        return instance
